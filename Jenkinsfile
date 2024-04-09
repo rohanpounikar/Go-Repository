@@ -27,7 +27,7 @@ pipeline {
                 echo 'BUILD EXECUTION STARTED'
                 sh 'go version'
                 sh 'go get ./...'
-                sh 'docker build . -t hello_go_http'
+                sh 'docker build . -t hello_go_http:$BUILDID'
             }
         }
         stage('Push') {
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
                 sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
-                sh 'docker push rohan150699/golang'
+                sh 'docker push rohan150699/golang:$BUILDID'
                 }
             }
         }
